@@ -3,11 +3,20 @@ const quoteText = document.getElementById("quote-text")
 const authorText = document.getElementById("author")
 const twitterButton = document.getElementById("twitter")
 const quoteButton = document.getElementById("new-quote")
+const loader = document.getElementById("loader")
 
 
+function loading(){
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
 
-
-
+function complete(){
+   if (!loader.hidden) {
+       loader.hidden = true;
+       quoteContainer.hidden = false;
+   }
+}
 // get quote from api
 
 async function getQuote() {
@@ -15,11 +24,11 @@ async function getQuote() {
     const apiUrl = 'https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
 
     try {
+        loading();
         const response = await fetch(proxyUrl + apiUrl);
         const data = await response.json();
-        console.log(data);
 
-
+        complete();
         // assigning it to DOM
 
         authorText.innerText = data.quoteAuthor ? data.quoteAuthor : "unknown";
